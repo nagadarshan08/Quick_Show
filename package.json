@@ -1,5 +1,7 @@
 {
   "dependencies": {
-    "inngest": "^4.2.4"
+    "express": "^5.2.1",
+    "inngest": "^4.2.4",
+    "mongoose": "^9.4.1"
   }
 }

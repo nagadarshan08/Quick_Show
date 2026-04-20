@@ -2,7 +2,6 @@ import express from "express";
 import mongoose from "mongoose";
 import { serve } from "inngest/express";
 
-// ✅ import both
 import { inngest } from "./inngest/index.js";
 import { functions } from "./inngest/index.js";
 
@@ -15,13 +14,13 @@ const connectDB = async () => {
     await mongoose.connect(process.env.MONGODB_URI);
     console.log("MongoDB Connected");
   } catch (err) {
-    console.error(err);
+    console.error("DB Error:", err);
   }
 };
 
 connectDB();
 
-// ✅ THIS IS THE MOST IMPORTANT PART
+// ✅ Inngest route (VERY IMPORTANT)
 app.use(
   "/api/inngest",
   serve({
@@ -30,7 +29,7 @@ app.use(
   })
 );
 
-// test route
+// ✅ Test route
 app.get("/", (req, res) => {
   res.send("API is working 🚀");
 });
