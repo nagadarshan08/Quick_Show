@@ -31,3 +31,4 @@ export default serve({
   client: inngest,
   functions: [syncUserCreation],
 });
+
