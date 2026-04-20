@@ -12,16 +12,26 @@ export const syncUserCreation = inngest.createFunction(
     event: "clerk/user.created",
   },
   async ({ event }) => {
-    await connectDB(); // 🔥 IMPORTANT
+    try {
+      console.log("EVENT RECEIVED:", event);
 
-    const { id, first_name, last_name, email_addresses, image_url } = event.data;
+      await connectDB();
+      console.log("DB CONNECTED");
 
-    await User.create({
-      _id: id,
-      email: email_addresses[0].email_address,
-      name: first_name + " " + last_name,
-      image: image_url,
-    });
+      const { id, first_name, last_name, email_addresses, image_url } = event.data;
+
+      await User.create({
+        _id: id,
+        email: email_addresses?.[0]?.email_address,
+        name: first_name + " " + last_name,
+        image: image_url,
+      });
+
+      console.log("USER CREATED");
+    } catch (err) {
+      console.error("ERROR:", err);
+      throw err;
+    }
   }
 );
 
