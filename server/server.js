@@ -1,32 +1,21 @@
-import express from "express";
-import mongoose from "mongoose";
+import express from 'express';
+import cors from 'cors';
+import 'dotenv/config';
+import connectDB from './configs/db.js';
+import { clerkMiddleware } from '@clerk/express'
+import { serve } from "inngest/express";
+import { inngest, functions } from "./inngest/index.js"
 
-const app = express();
+const app =  express();
+const port = 3000;
 
-// Middleware
-app.use(express.json());
+await connectDB();
 
-// Routes
-app.get("/", (req, res) => {
-  res.send("API is working 🚀");
-});
+app.use(express.json())
+app.use(cors())
+app.use(clerkMiddleware())
 
-// MongoDB connection
-const connectDB = async () => {
-  try {
-    await mongoose.connect(process.env.MONGODB_URI);
-    console.log("MongoDB Connected");
-  } catch (err) {
-    console.error(err);
-  }
-};
+app.get('/', (req,res)=> res.send('Server is live..'))
+app.use('/api/inngest', serve({ client: inngest, functions }))
 
-connectDB();
-
-// ❌ REMOVE THIS (Vercel does not support it)
-// app.listen(3000, () => {
-//   console.log("Server running");
-// });
-
-// ✅ IMPORTANT: Export app
-export default app;
+app.listen(port , ()=> console.log(`Server listening at http://localhost:${port}`));
