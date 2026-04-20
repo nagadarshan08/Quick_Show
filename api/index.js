@@ -2,13 +2,12 @@ import express from "express";
 import cors from "cors";
 import "dotenv/config";
 
-import connectDB from "./configs/db.js";
 import { clerkMiddleware } from "@clerk/express";
 import { serve } from "inngest/express";
-import { inngest, functions } from "./inngest/index.js";
+import connectDB from "../server/configs/db.js";
+import { inngest, functions } from "../server/inngest/index.js";
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
 // ✅ Connect DB
 await connectDB();
@@ -20,13 +19,11 @@ app.use(clerkMiddleware());
 
 // ✅ Test route
 app.get("/", (req, res) => {
-  res.send("Server is running locally 🚀");
+  res.send("Server is running 🚀");
 });
 
 // ✅ Inngest route
-app.use("/api/inngest", serve({ client: inngest, functions }));
+app.use("/inngest", serve({ client: inngest, functions }));
 
-// ✅ Start server (ONLY for local, NOT Vercel)
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
-});
+// ✅ REQUIRED for Vercel
+export default app;
