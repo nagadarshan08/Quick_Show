@@ -16,12 +16,13 @@ app.use(express.json());
 app.use(cors());
 app.use(clerkMiddleware());
 
-// ✅ ROOT of this function
+// Root route
 app.get("/", (req, res) => {
   res.status(200).send("API is working 🚀");
 });
 
-// ✅ Inngest
+// Inngest
 app.use("/inngest", serve({ client: inngest, functions }));
 
-export default app;
+// 🔥 THIS FIXES VERCEL
+export default (req, res) => app(req, res);
