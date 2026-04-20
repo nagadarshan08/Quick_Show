@@ -1,16 +1,13 @@
 {
-  "name": "server",
+  "name": "quick-show-server",
   "version": "1.0.0",
-  "description": "",
-  "main": "server.js",
   "type": "module",
+  "private": true,
+
   "scripts": {
-    "server": "nodemon server.js",
-    "start": "node server.js"
+    "dev": "nodemon server/server.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+
   "dependencies": {
     "@clerk/express": "^2.1.5",
     "axios": "^1.15.1",
@@ -21,6 +18,7 @@
     "inngest": "^4.2.4",
     "mongoose": "^9.4.1"
   },
+
   "devDependencies": {
     "nodemon": "^3.1.14"
   }
