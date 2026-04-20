@@ -10,31 +10,35 @@ import { inngest, functions } from "../server/inngest/index.js";
 
 const app = express();
 
-let isConnected = false;
-
-async function connect() {
-  if (isConnected) return;
-
-  try {
-    await connectDB();
-    isConnected = true;
-    console.log("DB Connected");
-  } catch (error) {
-    console.error("DB Error:", error);
-  }
-}
-
+// Middleware
 app.use(express.json());
 app.use(cors());
 app.use(clerkMiddleware());
 
-app.get("/", (req, res) => {
+// ✅ Connect DB safely (NO top-level await)
+let isConnected = false;
+
+const connectDatabase = async () => {
+  if (!isConnected) {
+    await connectDB();
+    isConnected = true;
+  }
+};
+
+// Root route
+app.get("/", async (req, res) => {
+  await connectDatabase();
   res.status(200).send("API is working 🚀");
 });
 
-app.use("/inngest", serve({ client: inngest, functions }));
+// Inngest route
+app.use("/inngest", async (req, res) => {
+  await connectDatabase();
+  return serve({ client: inngest, functions })(req, res);
+});
 
+// ✅ Vercel handler
 export default async function handler(req, res) {
-  await connect();
+  await connectDatabase();
   return app(req, res);
 }
