@@ -2,8 +2,8 @@ import express from "express";
 import mongoose from "mongoose";
 import { serve } from "inngest/express";
 
-import { inngest } from "./inngest/index.js";
-import { functions } from "./inngest/index.js";
+import { inngest } from "./innjest.js";
+import { functions } from "./innjest.js";
 
 const app = express();
 app.use(express.json());
