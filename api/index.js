@@ -1,37 +1,32 @@
 import express from "express";
 import mongoose from "mongoose";
-import { serve } from "inngest/express";
-
-import { inngest } from "./innjest.js";
-import { functions } from "./innjest.js";
 
 const app = express();
+
+// Middleware
 app.use(express.json());
 
-// ✅ MongoDB connection
+// Routes
+app.get("/", (req, res) => {
+  res.send("API is working 🚀");
+});
+
+// MongoDB connection
 const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGODB_URI);
     console.log("MongoDB Connected");
   } catch (err) {
-    console.error("DB Error:", err);
+    console.error(err);
   }
 };
 
 connectDB();
 
-// ✅ Inngest route (VERY IMPORTANT)
-app.use(
-  "/api/inngest",
-  serve({
-    client: inngest,
-    functions,
-  })
-);
+// ❌ REMOVE THIS (Vercel does not support it)
+// app.listen(3000, () => {
+//   console.log("Server running");
+// });
 
-// ✅ Test route
-app.get("/", (req, res) => {
-  res.send("API is working 🚀");
-});
-
+// ✅ IMPORTANT: Export app
 export default app;
