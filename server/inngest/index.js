@@ -1,9 +1,11 @@
 import { Inngest } from "inngest";
 import User from "../models/User.js";
+import connectDB from "../configs/db.js";
 
 // Create Inngest client
 export const inngest = new Inngest({
   id: "movie-ticket-booking",
+  eventKey: process.env.INNGEST_EVENT_KEY,
 });
 
 // 🔹 1. Sync User Creation
@@ -14,6 +16,8 @@ const syncUserCreation = inngest.createFunction(
   },
   async ({ event }) => {
     try {
+      await connectDB();
+
       const { id, first_name, last_name, email_addresses, image_url } = event.data;
 
       const userData = {
@@ -23,8 +27,12 @@ const syncUserCreation = inngest.createFunction(
         image: image_url,
       };
 
-      await User.create(userData);
-      console.log("✅ User Created:", userData);
+      await User.findByIdAndUpdate(id, userData, {
+        upsert: true,
+        new: true,
+      });
+
+      console.log("✅ User Created/Updated:", id);
     } catch (error) {
       console.error("❌ Error creating user:", error);
     }
@@ -39,9 +47,11 @@ const syncUserDeletion = inngest.createFunction(
   },
   async ({ event }) => {
     try {
-      const { id } = event.data;
+      await connectDB();
 
+      const { id } = event.data;
       await User.findByIdAndDelete(id);
+
       console.log("🗑️ User Deleted:", id);
     } catch (error) {
       console.error("❌ Error deleting user:", error);
@@ -57,6 +67,8 @@ const syncUserUpdation = inngest.createFunction(
   },
   async ({ event }) => {
     try {
+      await connectDB();
+
       const { id, first_name, last_name, email_addresses, image_url } = event.data;
 
       const userData = {
@@ -66,6 +78,7 @@ const syncUserUpdation = inngest.createFunction(
       };
 
       await User.findByIdAndUpdate(id, userData, { new: true });
+
       console.log("🔄 User Updated:", id);
     } catch (error) {
       console.error("❌ Error updating user:", error);
