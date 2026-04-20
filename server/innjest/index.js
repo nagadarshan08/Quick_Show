@@ -1,4 +1,4 @@
-import { serve } from "inngest/next";
+import { serve } from "inngest/next.js";
 import { Inngest } from "inngest";
 import connectDB from "./configs/db.js";
 import User from "./models/user.js";
