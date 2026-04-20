@@ -2,6 +2,10 @@
   "name": "quick-show",
   "version": "1.0.0",
   "type": "module",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "nodemon server/index.js"
+  },
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
@@ -9,5 +13,8 @@
     "inngest": "^3.22.0",
     "mongoose": "^8.5.1",
     "@clerk/express": "^2.1.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.0"
   }
 }
