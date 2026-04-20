@@ -10,9 +10,6 @@ import { inngest, functions } from "../server/inngest/index.js";
 
 const app = express();
 
-// Connect DB
-await connectDB();
-
 app.use(express.json());
 app.use(cors());
 app.use(clerkMiddleware());
@@ -25,7 +22,14 @@ app.get("/", (req, res) => {
 // Inngest route
 app.use("/inngest", serve({ client: inngest, functions }));
 
-// ✅ Vercel handler (IMPORTANT)
-export default function handler(req, res) {
+// ✅ FIXED HANDLER
+let isConnected = false;
+
+export default async function handler(req, res) {
+  if (!isConnected) {
+    await connectDB();
+    isConnected = true;
+  }
+
   return app(req, res);
 }
