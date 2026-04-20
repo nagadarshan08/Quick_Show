@@ -22,7 +22,9 @@ app.get("/", (req, res) => {
   res.send("API is working 🚀");
 });
 
-// Inngest route
 app.use("/api/inngest", serve({ client: inngest, functions }));
 
-export default app;
+// ✅ THIS IS THE FIX
+export default function handler(req, res) {
+  return app(req, res);
+}
