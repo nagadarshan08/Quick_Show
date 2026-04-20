@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
 
-const connectDB = async () => {
-  if (mongoose.connection.readyState >= 1) return;
+let isConnected = false;
 
-  await mongoose.connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
+const connectDB = async () => {
+  if (isConnected) return;
+
+  const conn = await mongoose.connect(process.env.MONGODB_URI);
+  isConnected = conn.connections[0].readyState;
 };
 
 export default connectDB;
