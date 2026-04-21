@@ -14,9 +14,12 @@ router.post("/", async (req, res) => {
 });
 
 // GET USERS
-router.get("/", async (req, res) => {
-  const users = await User.find();
-  res.json(users);
+router.get("/add", async (req, res) => {
+  const user = await User.create({
+    name: "Test User",
+    email: "test@gmail.com"
+  });
+  res.json(user);
 });
 
 export default router;
