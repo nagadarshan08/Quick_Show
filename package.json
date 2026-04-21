@@ -2,15 +2,15 @@
   "name": "quick-show",
   "version": "1.0.0",
   "description": "Movie ticket booking backend",
-  "main": "server/index.js",
+  "main": "server/server.js",
   "type": "module",
   "scripts": {
-"dev": "nodemon server/server.js",
-"server": "node server/server.js"
+    "dev": "nodemon server/server.js",
+    "start": "node server/server.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "engines": {
+    "node": "18.x"
+  },
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
