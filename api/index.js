@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import connectDB from "../server/configs/db.js";
+import connectDB from "../server/config/db.js";
 import userRoutes from "../server/routes/userRoutes.js";
 
 import { serve } from "inngest/express";
@@ -15,12 +15,13 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-connectDB();
+// ✅ SAFE DB CONNECT
+await connectDB();
 
 // routes
 app.use("/api/users", userRoutes);
 
-// Inngest for Vercel
+// inngest
 app.use(
   "/api/inngest",
   serve({
