@@ -15,10 +15,13 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-await connectDB();
+// ✅ DO NOT USE await here
+connectDB();
 
+// routes
 app.use("/api/users", userRoutes);
 
+// inngest
 app.use(
   "/api/inngest",
   serve({
@@ -27,12 +30,12 @@ app.use(
   })
 );
 
-// ✅ root route
+// root
 app.get("/", (req, res) => {
   res.send("Vercel API Running 🚀");
 });
 
-// ✅ fallback
+// fallback
 app.use((req, res) => {
   res.status(200).send("API is working 🚀");
 });
