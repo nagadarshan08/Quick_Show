@@ -2,7 +2,6 @@
   "name": "quick-show",
   "version": "1.0.0",
   "type": "module",
-  "main": "server/server.js",
   "scripts": {
     "dev": "nodemon server/server.js",
     "start": "node server/server.js"

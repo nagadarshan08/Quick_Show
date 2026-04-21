@@ -1,12 +1,9 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import connectDB from "./configs/db.js";
-import userRoutes from "./routes/userRoutes.js";
 
-import { serve } from "inngest/express";
-import { inngest } from "./inngest/client.js";
-import { userCreated } from "./inngest/functions.js";
+import connectDB from "../config/db.js";
+import userRoutes from "../routes/userRoutes.js";
 
 dotenv.config();
 
@@ -17,20 +14,10 @@ app.use(express.json());
 
 connectDB();
 
-// routes
 app.use("/api/users", userRoutes);
 
-// Inngest route
-app.use(
-  "/api/inngest",
-  serve({
-    client: inngest,
-    functions: [userCreated]
-  })
-);
-
 app.get("/", (req, res) => {
-  res.send("Local Server Running 🚀");
+  res.send("Server running locally...");
 });
 
 const PORT = process.env.PORT || 5000;

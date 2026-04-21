@@ -1,43 +1,20 @@
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv";
-import connectDB from "../server/config/db.js";
-import userRoutes from "../server/routes/userRoutes.js";
 
-import { serve } from "inngest/express";
-import { inngest } from "../server/inngest/client.js";
-import { userCreated } from "../server/inngest/functions.js";
-
-dotenv.config();
+import connectDB from "../config/db.js";
+import userRoutes from "../routes/userRoutes.js";
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-// ✅ DO NOT USE await here
-connectDB();
+await connectDB();
 
-// routes
 app.use("/api/users", userRoutes);
 
-// inngest
-app.use(
-  "/api/inngest",
-  serve({
-    client: inngest,
-    functions: [userCreated]
-  })
-);
-
-// root
 app.get("/", (req, res) => {
-  res.send("Vercel API Running 🚀");
-});
-
-// fallback
-app.use((req, res) => {
-  res.status(200).send("API is working 🚀");
+  res.send("Vercel API is running...");
 });
 
 export default app;
