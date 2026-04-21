@@ -1,22 +1,19 @@
 import mongoose from "mongoose";
-import dotenv from "dotenv";
-
-dotenv.config();
 
 const connectDB = async () => {
   try {
-    const uri = process.env.MONGODB_URI;
+    const mongoURI = process.env.MONGODB_URI;
 
-    if (!uri) {
+    if (!mongoURI) {
       throw new Error("❌ MONGODB_URI is missing");
     }
 
-    await mongoose.connect(uri);
+    await mongoose.connect(mongoURI);
 
     console.log("✅ MongoDB Connected");
   } catch (error) {
     console.error("❌ DB Error:", error.message);
-    throw error; // 🔥 IMPORTANT (so Vercel logs show properly)
+    process.exit(1);
   }
 };
 
