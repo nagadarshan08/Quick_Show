@@ -1,9 +1,11 @@
 import { inngest } from "./client.js";
 
-export const userCreated = inngest.createFunction(
-  { id: "user-created" },
-  { event: "user/created" },
-  async ({ event }) => {
-    console.log("User Created Event:", event.data);
-  }
-);
+export const functions = [
+  inngest.createFunction(
+    { id: "test-function" },
+    { event: "test/event" },
+    async ({ event }) => {
+      console.log("Event:", event);
+    }
+  ),
+];
