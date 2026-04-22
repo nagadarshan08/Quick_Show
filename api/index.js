@@ -7,7 +7,7 @@ import userRoutes from "../routes/userRoutes.js";
 
 import { serve } from "inngest/express";
 import { inngest } from "../inngest/client.js";
-import { functions } from "../inngest/functions.js";
+import functions from "../inngest/functions.js";
 
 dotenv.config();
 

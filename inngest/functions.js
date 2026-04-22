@@ -1,11 +1,13 @@
 import { inngest } from "./client.js";
 
-export const functions = [
+const functions = [
   inngest.createFunction(
     { id: "test-function" },
     { event: "test/event" },
     async ({ event }) => {
-      console.log("Event:", event);
+      console.log("Event received:", event);
     }
   ),
 ];
+
+export default functions;
