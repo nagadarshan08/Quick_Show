@@ -1,8 +1,0 @@
-{
-  "routes": [
-    {
-      "src": "/api/inngest",
-      "dest": "/api/inngest.js"
-    }
-  ]
-}
