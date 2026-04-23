@@ -1,45 +1,46 @@
 import { inngest } from "./client.js";
 import User from "../models/User.js";
 
-// ✅ CREATE USER (Clerk → DB)
-const createUser = inngest.createFunction(
-  { id: "create-user" },
+// ✅ CREATE USER
+export const syncUser = inngest.createFunction(
+  { id: "sync-user" },
   { event: "clerk/user.created" },
   async ({ event }) => {
     const { id, first_name, last_name, email_addresses, image_url } = event.data;
 
     await User.create({
       clerkId: id,
-      name: `${first_name || ""} ${last_name || ""}`,
-      email: email_addresses?.[0]?.email_address,
+      name: `${first_name} ${last_name}`,
+      email: email_addresses[0].email_address,
       image: image_url,
     });
 
-    console.log("User created:", id);
+    return { success: true };
   }
 );
 
 // ✅ UPDATE USER
-const updateUser = inngest.createFunction(
+export const updateUser = inngest.createFunction(
   { id: "update-user" },
   { event: "clerk/user.updated" },
   async ({ event }) => {
-    const { id, first_name, last_name, image_url } = event.data;
+    const { id, first_name, last_name, email_addresses, image_url } = event.data;
 
     await User.findOneAndUpdate(
       { clerkId: id },
       {
-        name: `${first_name || ""} ${last_name || ""}`,
+        name: `${first_name} ${last_name}`,
+        email: email_addresses[0].email_address,
         image: image_url,
       }
     );
 
-    console.log("User updated:", id);
+    return { success: true };
   }
 );
 
 // ✅ DELETE USER
-const deleteUser = inngest.createFunction(
+export const deleteUser = inngest.createFunction(
   { id: "delete-user" },
   { event: "clerk/user.deleted" },
   async ({ event }) => {
@@ -47,9 +48,9 @@ const deleteUser = inngest.createFunction(
 
     await User.findOneAndDelete({ clerkId: id });
 
-    console.log("User deleted:", id);
+    return { success: true };
   }
 );
 
-// ✅ EXPORT ALL FUNCTIONS
-export const functions = [createUser, updateUser, deleteUser];
+// ✅ EXPORT ALL
+export const functions = [syncUser, updateUser, deleteUser];
