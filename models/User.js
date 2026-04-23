@@ -2,10 +2,9 @@ import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
   clerkId: { type: String, required: true, unique: true },
-  firstName: String,
-  lastName: String,
+  name: String,
   email: String,
-  imageUrl: String,
-}, { timestamps: true });
+  image: String,
+});
 
 export default mongoose.model("User", userSchema);
