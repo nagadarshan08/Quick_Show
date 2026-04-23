@@ -1,16 +1,17 @@
 import express from "express";
-import {
-  createUser,
-  getUsers,
-  updateUser,
-  deleteUser
-} from "../controllers/userController.js";
 
 const router = express.Router();
 
-router.post("/", createUser);
-router.get("/", getUsers);
-router.put("/:id", updateUser);
-router.delete("/:id", deleteUser);
+// ✅ GET all users
+router.get("/", async (req, res) => {
+  try {
+    // Temporary response (replace with DB later)
+    res.json([
+      { name: "Darshan", role: "Developer" }
+    ]);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
 export default router;

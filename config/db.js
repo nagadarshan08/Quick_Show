@@ -1,22 +1,20 @@
 import mongoose from "mongoose";
 
-let cached = global.mongoose;
-
-if (!cached) {
-  cached = global.mongoose = { conn: null, promise: null };
-}
-
 const connectDB = async () => {
-  if (cached.conn) return cached.conn;
+  try {
+    const uri = process.env.MONGODB_URI; // ✅ correct
 
-  if (!cached.promise) {
-    cached.promise = mongoose.connect(process.env.MONGODB_URI).then((mongoose) => {
-      return mongoose;
-    });
+    if (!uri) {
+      throw new Error("MONGODB_URI is missing");
+    }
+
+    await mongoose.connect(uri);
+
+    console.log("MongoDB Connected ✅");
+  } catch (error) {
+    console.error("DB Error:", error.message);
+    process.exit(1);
   }
-
-  cached.conn = await cached.promise;
-  return cached.conn;
 };
 
 export default connectDB;
