@@ -18,6 +18,8 @@ const syncUser = inngest.createFunction(
       console.log("User saved:", user);
     } catch (err) {
       console.error("ERROR:", err);
+
+      throw err; // 🔥 THIS LINE FIXES EVERYTHING
     }
   }
 );
